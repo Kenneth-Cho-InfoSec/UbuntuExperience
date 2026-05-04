@@ -1,49 +1,27 @@
 # Ubuntu Experience
 
-A web-based interactive demo of the Ubuntu Touch mobile operating system. Try Ubuntu Touch without flashing your phone!
+A web-based interactive demo (PWA) of the Ubuntu Touch mobile operating system user interface.
 
-## Try Ubuntu Touch Without Flashing
+## About
 
-There are several ways to experience Ubuntu Touch without modifying your device:
+This is a **web-based simulation** of Ubuntu Touch - a Progressive Web App (PWA) that runs directly in your browser. It demonstrates the Ubuntu Touch user experience, featuring:
 
-### 1. This Web Demo
-This interactive web-based demo simulates the Ubuntu Touch experience directly in your browser. It features:
 - Lock screen with time and notifications
 - App launcher with grid of apps
 - System settings
 - Weather app
-- Music player
-- Terminal with commands
-- And more!
+- Music player with library
+- Terminal emulator with various commands
+- File manager
+- Gallery
+- Browser
+- Messaging and phone apps
+- Task switcher
+- Dark/Light mode toggle
 
-**No installation required** - just open in your browser.
+**Note**: This is a UI demo/simulator only - it cannot run actual Ubuntu Touch apps or operating system.
 
-### 2. Anbox for Android (Android Only)
-Anbox runs Ubuntu Touch apps on a standard Android device without flashing:
-
-```bash
-# Install Anbox from Google Play or F-Droid
-# Then enable Ubuntu Touch mode in Anbox settings
-```
-
-### 3. Ubuntu Touch Emulator (Virtual Machine)
-The UBports team provides a virtual machine image:
-- Download from: https://docs.ubports.com/en/latest/guides/virtualbox.html
-- Requires VirtualBox
-- Full Ubuntu Touch desktop experience
-
-### 4. Waydroid (Linux Only)
-Waydroid runs Android apps on Linux systems. On supported devices it can run Ubuntu Touch in a container:
-- https://waydroid.org/
-- Works on some Linux phones (Librem 5, PinePhone Pro)
-- Requires postmarketOS or similar Linux distribution
-
-### 5. pine64.org Community Images
-The PinePhone and PineTab have community-supported images:
-- Visit https://forum.pine64.org/ for the latest releases
-- Run from SD card without affecting main OS
-
-## Quick Start
+## Installation
 
 ```bash
 # Install dependencies
@@ -59,23 +37,28 @@ npm run build
 npm run preview
 ```
 
-## Supported Devices (for actual installation)
+## Usage
 
-If you decide to flash Ubuntu Touch to a device, these are officially supported:
-- **OnePlus One** - Official
-- **Fairphone 2** - Official
-- **Google Nexus 5** - Official
-- **LG Nexus 4** - Official
-- **Bq Aquaris E5** - Official
-- **PinePhone** - Community
-- **PineTab** - Community
+1. Open the app in a browser
+2. Unlock the screen (swipe up)
+3. Browse through the app drawer
+4. Try various apps and features
+5. Toggle dark/light mode in settings
+6. Use the size input to adjust demo dimensions
 
-## Learn More
+## Running as a PWA
 
-- [UBports Official Site](https://ubports.com)
-- [Ubuntu Touch Documentation](https://docs.ubports.com)
-- [UBports Forum](https://forum.ubports.com)
-- [OpenStore](https://open-store.io) - App store for Ubuntu Touch
+To install as a PWA:
+- Serve the `dist` folder (e.g., via GitHub Pages, Netlify, Vercel)
+- Open on a mobile device
+- Add to home screen for fullscreen experience
+
+## Technologies
+
+- React 19
+- Vite
+- Lucide React (icons)
+- CSS for styling
 
 ## License
 
