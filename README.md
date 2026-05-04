@@ -32,10 +32,11 @@ The UBports team provides a virtual machine image:
 - Requires VirtualBox
 - Full Ubuntu Touch desktop experience
 
-### 4. WebDFU (Experimental)
-Some devices can run Ubuntu Touch in a chroot without flashing:
-- https://webdfu.fuerstenau.io/
-- Currently supports limited devices
+### 4. Waydroid (Linux Only)
+Waydroid runs Android apps on Linux systems. On supported devices it can run Ubuntu Touch in a container:
+- https://waydroid.org/
+- Works on some Linux phones (Librem 5, PinePhone Pro)
+- Requires postmarketOS or similar Linux distribution
 
 ### 5. pine64.org Community Images
 The PinePhone and PineTab have community-supported images:
