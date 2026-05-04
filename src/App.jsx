@@ -1458,7 +1458,7 @@ function SettingsApp({ data, updateData, resetDemo, darkMode }) {
       </section>
       <section className="settings-section"><h3>Storage</h3><div className="storage-bar"><span style={{ width: `${Math.min(88, 24 + data.gallery.length * 4 + data.files.length * 2)}%` }} /></div><small>{data.gallery.length} photos · {data.files.length} files · {data.installedApps.length} installed apps</small></section>
       <section className="settings-section"><h3>Apps</h3>{[...appCatalog, ...storeApps.filter((app) => data.installedApps.includes(app.id))].map((app) => <div className="settings-row" key={app.id}><span><strong>{app.name}</strong><small>Local demo permissions</small></span><AppIcon app={app} compact /></div>)}</section>
-      <section className="settings-section"><h3>About</h3><p>Ubuntu Experience · client-side daily-driver simulation · Ubuntu font by Dalton Maag.</p><button className="danger full-button" onClick={resetDemo}>Reset demo data</button></section>
+      <section className="settings-section"><h3>About</h3><p>Ubuntu Experience · client-side daily-driver simulation · Ubuntu font by Dalton Maag.</p><p><a href="https://kenneth-cho-infosec.github.io/UbuntuExperience/" target="_blank" rel="noopener">Live Demo</a> · <a href="https://github.com/Kenneth-Cho-InfoSec/UbuntuExperience" target="_blank" rel="noopener">GitHub</a></p><button className="danger full-button" onClick={resetDemo}>Reset demo data</button></section>
     </div>
   )
 }

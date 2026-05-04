@@ -2,6 +2,10 @@
 
 A web-based interactive demo (PWA) of the Ubuntu Touch mobile operating system user interface.
 
+## Live Demo
+
+**Try it here**: https://kenneth-cho-infosec.github.io/UbuntuExperience/
+
 ## About
 
 This is a **web-based simulation** of Ubuntu Touch - a Progressive Web App (PWA) that runs directly in your browser. It demonstrates the Ubuntu Touch user experience, featuring:
@@ -49,7 +53,8 @@ npm run preview
 ## Running as a PWA
 
 To install as a PWA:
-- Serve the `dist` folder (e.g., via GitHub Pages, Netlify, Vercel)
+- Use the live demo link above
+- Or serve the `dist` folder locally
 - Open on a mobile device
 - Add to home screen for fullscreen experience
 
