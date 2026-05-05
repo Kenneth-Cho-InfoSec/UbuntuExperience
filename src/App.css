@@ -14,6 +14,16 @@
   --text-primary: #f8eef5;
   --text-secondary: rgba(255, 255, 255, 0.68);
   --accent: linear-gradient(135deg, #f4511e, #8a2350);
+
+  /* Explicit layer scale keeps the top app/status bar above gesture surfaces. */
+  --z-wallpaper: 1;
+  --z-workspace: 10;
+  --z-app-surface: 50;
+  --z-edge-zone: 60;
+  --z-launcher: 80;
+  --z-app-bar: 1000;
+  --z-system-panel: 1100;
+  --z-toast: 1200;
 }
 
 /* ============================================
@@ -37,7 +47,6 @@
 .dark-mode .settings-app,
 .dark-mode .terminal-app,
 .dark-mode .notes-app,
-.dark-mode .weather-app,
 .dark-mode .store-app,
 .dark-mode .contacts-app,
 .dark-mode .media-app,
@@ -46,6 +55,11 @@
 .dark-mode .rich-app {
   background: #121212 !important;
   color: #e0e0e0 !important;
+}
+
+.dark-mode .weather-app {
+  background: linear-gradient(150deg, #0a4a6e, #1a7aa8 62%, #2a4a5e) !important;
+  color: #fff !important;
 }
 
 /* Chat panes and message areas */
@@ -95,7 +109,6 @@
 .light-mode .settings-app,
 .light-mode .terminal-app,
 .light-mode .notes-app,
-.light-mode .weather-app,
 .light-mode .store-app,
 .light-mode .contacts-app,
 .light-mode .media-app,
@@ -104,6 +117,11 @@
 .light-mode .rich-app {
   background: #ffffff !important;
   color: #222222 !important;
+}
+
+.light-mode .weather-app {
+  background: linear-gradient(150deg, #64b5f6, #90caf9 62%, #fff59d) !important;
+  color: #1a237e !important;
 }
 
 .light-mode .chat-pane,
@@ -141,7 +159,6 @@
 .dark-mode .settings-section,
 .dark-mode .storage-bar,
 .dark-mode .terminal-lines,
-.dark-mode .weather-app,
 .dark-mode .store-app,
 .dark-mode .store-hero,
 .dark-mode .store-filters,
@@ -246,10 +263,18 @@ button:disabled {
   color: #f8eef5;
 }
 
+.light-mode .demo-controls {
+  color: #151417;
+}
+
 .demo-controls span {
   font-size: 13px;
   font-weight: 800;
   color: #d9c9d2;
+}
+
+.light-mode .demo-controls span {
+  color: #5e5e5e;
 }
 
 .size-options {
@@ -264,7 +289,7 @@ button:disabled {
   border-radius: 7px;
   padding: 7px 10px;
   background: rgba(255, 255, 255, 0.08);
-  color: var(--text-primary);
+  color: #f8eef5;
   font-size: 13px;
 }
 
@@ -274,10 +299,16 @@ button:disabled {
   color: #fff;
 }
 
-.light-mode .size-options button {
+.light-mode .size-options button,
+.light-mode .size-options button.active {
   border: 1px solid rgba(0, 0, 0, 0.16);
   background: rgba(0, 0, 0, 0.06);
   color: #151417;
+}
+
+.light-mode .size-options button.active {
+  background: var(--ubuntu-orange);
+  border-color: var(--ubuntu-orange);
 }
 
 .phone-shell {
@@ -553,7 +584,7 @@ button:disabled {
 .status-bar {
   position: absolute;
   inset: 0 0 auto 0;
-  z-index: 20;
+  z-index: var(--z-app-bar);
   height: var(--status-height);
   display: flex;
   align-items: center;
@@ -610,7 +641,7 @@ button:disabled {
   top: var(--status-height);
   right: 0;
   left: 0;
-  z-index: 28;
+  z-index: var(--z-system-panel);
   max-height: 48vh;
   overflow: hidden;
   color: #fff;
@@ -629,7 +660,7 @@ button:disabled {
 .quick-settings-panel {
   position: absolute;
   inset: 0;
-  z-index: 100;
+  z-index: var(--z-system-panel);
   display: flex;
   flex-direction: column;
   color: #fff;
@@ -1128,7 +1159,7 @@ button:disabled {
 .launcher {
   position: absolute;
   inset: 0 auto 0 0;
-  z-index: 30;
+  z-index: var(--z-launcher);
   width: var(--launcher-width);
   padding-top: var(--status-height);
   display: flex;
@@ -1202,13 +1233,13 @@ button:disabled {
   position: absolute;
   inset: var(--status-height) 0 0 var(--launcher-width);
   overflow: hidden;
-  z-index: 10;
+  z-index: var(--z-workspace);
 }
 
 .workspace.app-workspace {
   left: 0;
   touch-action: pan-y;
-  z-index: 60;
+  z-index: var(--z-workspace);
 }
 
 .edge-gesture-zone {
@@ -1216,7 +1247,7 @@ button:disabled {
   top: 0;
   bottom: 0;
   width: 18px;
-  z-index: 1000;
+  z-index: var(--z-edge-zone);
   pointer-events: auto;
   touch-action: none;
 }
@@ -1255,7 +1286,7 @@ button:disabled {
 .home-screen,
 .app-surface {
   position: relative;
-  z-index: 2;
+  z-index: var(--z-wallpaper);
   min-height: 100%;
   height: 100%;
 }
@@ -1388,7 +1419,7 @@ button:disabled {
 .app-surface {
   position: absolute;
   inset: 0;
-  z-index: 50;
+  z-index: var(--z-app-surface);
   display: flex;
   flex-direction: column;
   background: var(--app-bg);
@@ -1426,7 +1457,7 @@ button:disabled {
 .app-surface {
   position: absolute;
   inset: 0;
-  z-index: 50;
+  z-index: var(--z-app-surface);
 }
 
 .app-title {
@@ -2865,13 +2896,41 @@ button:disabled {
 
 .daily-forecast p {
   margin: 0;
-  display: grid;
-  grid-template-columns: 48px 1fr auto;
-  gap: 8px;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   padding: 10px 12px;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.2);
+}
+
+.daily-forecast p strong {
+  font-size: 21px;
+  font-weight: 500;
+}
+
+.daily-forecast p b {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.daily-forecast p b small {
+  font-size: 16px;
+  font-weight: 400;
+  opacity: 0.85;
+}
+
+.daily-forecast p b {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.daily-forecast p b small {
+  font-size: 10px;
+  font-weight: 400;
+  opacity: 0.85;
 }
 
 .store-detail {
@@ -3050,14 +3109,15 @@ button:disabled {
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
-  padding: 16px max(10px, calc((100% - min(76%, 330px)) / 2)) 22px;
+  scroll-behavior: smooth;
+  padding: 16px max(10px, calc((100% - min(91%, 330px)) / 2)) 22px;
   touch-action: pan-x;
 }
 
 .task-card,
 .empty-task-card {
-  flex: 0 0 min(76%, 330px);
-  height: min(64vh, 510px);
+  flex: 0 0 min(91%, 330px);
+  height: min(43vh, 510px);
   border-radius: 10px;
   background: #f4f1ee;
   color: #353036;
@@ -3070,6 +3130,7 @@ button:disabled {
   opacity: 0.94;
   transition: transform 180ms ease, opacity 180ms ease, box-shadow 180ms ease;
   touch-action: pan-y;
+  cursor: pointer;
 }
 
 .task-card.active {
@@ -3255,4 +3316,503 @@ button:disabled {
     --shell-width: calc(100vw - 16px);
     --shell-height: calc(100vh - 86px);
   }
+}
+
+
+/* Layering fix: during edge gestures, keep the app/status bar above launcher, drawer,
+   workspace content and gesture hit zones. The app bar is intentionally outside the
+   swipe-transformed workspace, so a left-edge reveal cannot cover it. */
+.phone-shell.edge-swiping .status-bar,
+.phone-shell.app-open .status-bar {
+  z-index: var(--z-app-bar);
+  transform: translateZ(0);
+  isolation: isolate;
+}
+
+.status-bar {
+  pointer-events: auto;
+}
+
+/* In-app top bars should stay above their own scrollable app content. */
+.morph-topbar,
+.store-hero,
+.chat-pane > header,
+.task-switcher-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+/* Music App */
+.music-app {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.music-tabs {
+  display: flex;
+  padding: 8px 12px;
+  gap: 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.music-tabs button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.music-tabs button.active {
+  background: var(--aubergine-700);
+  color: #fff;
+}
+
+.music-library {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 12px;
+}
+
+.music-section {
+  margin-bottom: 20px;
+}
+
+.music-section h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 14px 0 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.music-horiz-scroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 8px;
+}
+
+.music-album-card {
+  flex: 0 0 100px;
+  scroll-snap-align: start;
+  cursor: pointer;
+}
+
+.music-album-cover {
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--aubergine-800), var(--aubergine-700));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 8px;
+}
+
+.music-album-card span {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.music-album-card small {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.music-artist-card {
+  flex: 0 0 70px;
+  text-align: center;
+  scroll-snap-align: start;
+}
+
+.music-artist-avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--aubergine-800), var(--aubergine-700));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0 auto 8px;
+}
+
+.music-artist-card span {
+  font-size: 11px;
+  color: var(--text);
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.music-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.music-list button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 8px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  color: var(--text);
+}
+
+.music-list button:hover {
+  background: var(--surface-alt);
+}
+
+.music-list button.active {
+  background: var(--surface-alt);
+}
+
+.music-list button.active strong {
+  color: var(--ubuntu-orange);
+}
+
+.music-track-num {
+  width: 24px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.music-track-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.music-track-info strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.music-track-info small {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.music-track-duration {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* Now Playing */
+.music-player {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  align-items: center;
+}
+
+.now-playing-art {
+  margin-bottom: 20px;
+}
+
+.album-art-large {
+  width: 220px;
+  height: 220px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--aubergine-800), var(--aubergine-700));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.now-playing-info {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.now-playing-info h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 4px;
+  color: var(--text);
+}
+
+.now-playing-info p {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0;
+}
+
+.now-playing-info small {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.now-playing-progress {
+  width: 100%;
+  max-width: 280px;
+  margin-bottom: 16px;
+}
+
+.music-progress {
+  width: 100%;
+  height: 4px;
+  -webkit-appearance: none;
+  background: var(--surface-alt);
+  border-radius: 2px;
+  outline: none;
+}
+
+.music-progress::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--ubuntu-orange);
+  cursor: pointer;
+}
+
+.music-time-display {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.now-playing-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.music-control-btn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 200ms ease;
+}
+
+.music-control-btn:hover {
+  color: var(--text);
+}
+
+.music-control-btn.active {
+  color: var(--ubuntu-orange);
+}
+
+.music-control-btn.play-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--ubuntu-orange);
+  color: #fff;
+}
+
+.music-control-btn.play-btn:hover {
+  background: #e6460f;
+}
+
+.now-playing-extras {
+  display: flex;
+  gap: 24px;
+}
+
+.now-playing-extras button {
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 8px;
+}
+
+/* Search */
+.music-search {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+}
+
+.music-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--surface);
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+
+.music-search-bar svg {
+  color: var(--muted);
+}
+
+.music-search-bar input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+}
+
+.music-search-bar input::placeholder {
+  color: var(--muted);
+}
+
+.music-no-results {
+  text-align: center;
+  color: var(--muted);
+  padding: 40px 20px;
+}
+
+.music-search-suggestions h3 {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 16px 0 10px;
+  text-transform: uppercase;
+}
+
+.music-search-suggestions > p {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.music-suggestion-chip {
+  padding: 8px 14px;
+  background: var(--surface);
+  border: none;
+  border-radius: 20px;
+  font-size: 12px;
+  color: var(--text);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.light-mode .music-app {
+  background: #fff;
+}
+
+.light-mode .music-tabs button {
+  color: #333;
+}
+
+.light-mode .music-tabs button.active {
+  background: var(--ubuntu-orange);
+  color: #fff;
+}
+
+.light-mode .music-section h3 {
+  color: #666;
+}
+
+.light-mode .music-album-card span,
+.light-mode .music-artist-card span,
+.light-mode .music-track-info strong,
+.light-mode .music-track-info small,
+.light-mode .music-track-duration {
+  color: #151417;
+}
+
+.light-mode .music-track-num {
+  color: #888;
+}
+
+.light-mode .now-playing-info h2,
+.light-mode .now-playing-info p,
+.light-mode .now-playing-info small {
+  color: #151417;
+}
+
+.light-mode .music-time-display {
+  color: #666;
+}
+
+.light-mode .music-control-btn {
+  color: #666;
+}
+
+.light-mode .music-control-btn:hover {
+  color: #151417;
+}
+
+.light-mode .music-list button {
+  color: #151417;
+}
+
+.light-mode .music-list button:hover,
+.light-mode .music-list button.active {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.light-mode .album-art-large {
+  background: linear-gradient(135deg, #e8d5e0, #d4b8c8);
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.light-mode .music-control-btn.play-btn {
+  color: #fff;
+}
+
+.light-mode .music-search-bar {
+  background: #f5f5f5;
+}
+
+.light-mode .music-search-bar input {
+  color: #151417;
+}
+
+.light-mode .music-search-bar svg {
+  color: #666;
+}
+
+.light-mode .music-suggestion-chip {
+  background: #f0f0f0;
+  color: #151417;
+}
+
+.light-mode .music-no-results {
+  color: #888;
 }

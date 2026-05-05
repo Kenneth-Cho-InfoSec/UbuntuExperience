@@ -21,6 +21,7 @@ import {
   History,
   Image,
   Inbox,
+  ListMusic,
   Lock,
   Mail,
   MapPin,
@@ -30,22 +31,26 @@ import {
   Moon,
   Music,
   Navigation,
+  Pause,
   Phone,
   Play,
   Plus,
   RefreshCcw,
+  Repeat,
   Search,
   Settings,
   Shield,
   ShoppingBag,
   Signal,
+  Shuffle,
+  SkipBack,
+  SkipForward,
   Star,
   Sun,
   Terminal,
   Trash2,
   Upload,
   Users,
-  Video,
   Volume2,
   VolumeX,
   Wifi,
@@ -69,7 +74,6 @@ const appCatalog = [
   { id: 'notes', name: 'Notes', short: 'Notes', icon: FileText, color: 'yellow' },
   { id: 'weather', name: 'Weather', short: 'Weather', icon: CloudSun, color: 'blue' },
   { id: 'music', name: 'Music', short: 'Music', icon: Music, color: 'pink' },
-  { id: 'media', name: 'Media Player', short: 'Media', icon: Play, color: 'purple' },
   { id: 'files', name: 'File Manager', short: 'Files', icon: Folder, color: 'gray' },
 ]
 
@@ -126,16 +130,11 @@ const storeApps = [
   },
 ]
 
-const demoSizes = [
-  { id: 'compact', label: 'Compact' },
-  { id: 'phone', label: 'Phone' },
-  { id: 'phablet', label: 'Phablet' },
-  { id: 'tablet', label: 'Tablet' },
-  { id: 'full', label: 'Full' },
-]
+
 
 const defaultData = {
-  demoSize: 'phone',
+  demoWidth: 400,
+  demoHeight: 180,
   darkMode: true,
   installedApps: [],
   status: {
@@ -394,8 +393,8 @@ function App() {
 
   return (
     <main className={`demo-page ${data.darkMode ? 'dark-mode' : 'light-mode'} ${isPWA ? 'pwa-mode' : ''}`}>
-      {!isPWA && <DemoSizeControls demoSize={data.demoSize} setDemoSize={(demoSize) => updateData((current) => ({ ...current, demoSize }))} />}
-      <section className={`phone-shell size-${data.demoSize} ${active ? 'app-open' : ''} ${data.darkMode ? 'dark-mode' : 'light-mode'} ${isPWA ? 'pwa-fullscreen' : ''}`} aria-label="Ubuntu Experience interactive demo">
+      {!isPWA && <DemoSizeControls demoWidth={data.demoWidth} setDemoWidth={(w) => updateData((current) => ({ ...current, demoWidth: w }))} demoHeight={data.demoHeight} setDemoHeight={(h) => updateData((current) => ({ ...current, demoHeight: h }))} />}
+      <section className={`phone-shell ${active ? 'app-open' : ''} ${edgeDrag ? 'edge-swiping' : ''} ${data.darkMode ? 'dark-mode' : 'light-mode'} ${isPWA ? 'pwa-fullscreen' : ''}`} style={{ '--shell-width': `${data.demoWidth}px`, '--shell-height': `${data.demoHeight}px` }} aria-label="Ubuntu Experience interactive demo">
         {locked ? (
           <LockScreen
             status={data.status}
@@ -434,6 +433,10 @@ function App() {
                 <AppSurface
                   app={active}
                   darkMode={data.darkMode}
+                  close={() => {
+                    setActiveApp(null)
+                    setLauncherVisible(false)
+                  }}
                   openApp={openApp}
                   data={data}
                   updateData={updateData}
@@ -454,16 +457,39 @@ function App() {
   )
 }
 
-function DemoSizeControls({ demoSize, setDemoSize }) {
+function DemoSizeControls({ demoWidth, setDemoWidth, demoHeight, setDemoHeight }) {
+  const ratio = `${demoWidth}:${demoHeight}`
+
+  const handleRatioChange = (e) => {
+    const match = e.target.value.match(/^(\d+):(\d+)$/)
+    if (match) {
+      const w = Number(match[1])
+      const h = Number(match[2])
+      if (w > 0 && h > 0) {
+        const newWidth = Math.round((demoHeight / h) * w)
+        setDemoWidth(newWidth)
+      }
+    }
+  }
+
+  const handleWidthChange = (e) => {
+    const w = Number(e.target.value)
+    if (w > 0) setDemoWidth(w)
+  }
+
+  const handleHeightChange = (e) => {
+    const h = Number(e.target.value)
+    if (h > 0) setDemoHeight(h)
+  }
+
   return (
     <div className="demo-controls" aria-label="Demo screen size">
-      <span>Screen</span>
-      <div className="size-options">
-        {demoSizes.map((size) => (
-          <button className={demoSize === size.id ? 'active' : ''} key={size.id} onClick={() => setDemoSize(size.id)} aria-pressed={demoSize === size.id}>
-            {size.label}
-          </button>
-        ))}
+      <span>Size</span>
+      <div className="size-inputs">
+        <input type="text" value={ratio} onChange={handleRatioChange} placeholder="20:9" pattern="\d+:\d+" />
+        <input type="number" value={demoWidth} onChange={handleWidthChange} placeholder="W" min={200} max={2000} />
+        <span>x</span>
+        <input type="number" value={demoHeight} onChange={handleHeightChange} placeholder="H" min={100} max={2000} />
       </div>
     </div>
   )
@@ -915,7 +941,7 @@ function AppContent({ id, app, openApp, data, updateData, installApp, removeApp,
   if (id === 'weather') return <WeatherApp {...common} />
   if (id === 'store') return <StoreApp openApp={openApp} installedApps={data.installedApps} installApp={installApp} removeApp={removeApp} />
   if (id === 'music') return <MusicApp {...common} />
-  if (id === 'media') return <MediaApp {...common} />
+  if (id === 'music') return <MusicApp {...common} />
   if (id === 'contacts') return <ContactsApp {...common} />
   if (id === 'files') return <FilesApp {...common} />
   if (id === 'dekko') return <DekkoApp {...common} removeApp={removeApp} app={app} />
@@ -1429,17 +1455,17 @@ function SettingsApp({ data, updateData, resetDemo, darkMode }) {
             <span className="toggle-knob" />
           </button>
         </label>
-        <div className="settings-row"><span><strong>Demo size</strong><small>{data.demoSize}</small></span><Moon size={22} /></div>
+        <div className="settings-row"><span><strong>Demo size</strong><small>{data.demoWidth}x{data.demoHeight}</small></span><Moon size={22} /></div>
       </section>
       <section className="settings-section"><h3>Storage</h3><div className="storage-bar"><span style={{ width: `${Math.min(88, 24 + data.gallery.length * 4 + data.files.length * 2)}%` }} /></div><small>{data.gallery.length} photos · {data.files.length} files · {data.installedApps.length} installed apps</small></section>
       <section className="settings-section"><h3>Apps</h3>{[...appCatalog, ...storeApps.filter((app) => data.installedApps.includes(app.id))].map((app) => <div className="settings-row" key={app.id}><span><strong>{app.name}</strong><small>Local demo permissions</small></span><AppIcon app={app} compact /></div>)}</section>
-      <section className="settings-section"><h3>About</h3><p>Ubuntu Experience · client-side daily-driver simulation · Ubuntu font by Dalton Maag.</p><button className="danger full-button" onClick={resetDemo}>Reset demo data</button></section>
+      <section className="settings-section"><h3>About</h3><p>Ubuntu Experience · client-side daily-driver simulation · Ubuntu font by Dalton Maag.</p><p><a href="https://kenneth-cho-infosec.github.io/UbuntuExperience/" target="_blank" rel="noopener">Live Demo</a> · <a href="https://github.com/Kenneth-Cho-InfoSec/UbuntuExperience" target="_blank" rel="noopener">GitHub</a></p><button className="danger full-button" onClick={resetDemo}>Reset demo data</button></section>
     </div>
   )
 }
 
 function TerminalApp({ data, openApp, installApp }) {
-  const [lines, setLines] = useState(['phablet@ubuntu:~$ welcome', 'Try: help, apps, open browser, install dekko, notes, contacts, weather, ls, date, clear'])
+  const [lines, setLines] = useState(['phablet@ubuntu:~$ welcome', 'Try: help, apps, open browser, install dekko, notes, contacts, weather, ls, date, clear, whoami, uname, uptime, df, free, hostname, pwd, echo'])
   const [command, setCommand] = useState('')
   const runCommand = (event) => {
     event.preventDefault()
@@ -1450,8 +1476,9 @@ function TerminalApp({ data, openApp, installApp }) {
       return
     }
     let output = ''
-    const [cmd, arg] = next.split(' ')
-    if (cmd === 'help') output = 'Commands: apps, open <app>, install <app>, notes, contacts, weather, status, ls, cat release, date, clear'
+    const [cmd, ...args] = next.split(' ')
+    const arg = args.join(' ')
+    if (cmd === 'help') output = 'Commands: help, apps, open <app>, install <app>, notes, contacts, weather, status, ls, cat <file>, date, clear, whoami, uname, uptime, df, free, hostname, pwd, echo <text>'
     else if (cmd === 'apps') output = `Installed: ${[...appCatalog.map((app) => app.id), ...data.installedApps].join(', ')}`
     else if (cmd === 'open' && arg) {
       openApp(arg)
@@ -1464,8 +1491,22 @@ function TerminalApp({ data, openApp, installApp }) {
     else if (cmd === 'weather') output = `${data.weather.location}: ${data.weather.temp}°${data.weather.unit}, ${data.weather.condition}`
     else if (cmd === 'status') output = `Wi-Fi ${data.status.wifi ? 'on' : 'off'}, ${data.status.network}, battery ${data.status.battery}%`
     else if (cmd === 'ls') output = data.files.map((file) => file.name).join('\n')
-    else if (next === 'cat release') output = data.files.find((file) => file.id === 'release')?.content || 'missing'
-    else if (cmd === 'date') output = new Date().toLocaleString()
+    else if (cmd === 'cat' && arg) {
+      const file = data.files.find((f) => f.name.toLowerCase() === arg.toLowerCase() || f.id === arg)
+      output = file?.content || `${arg}: No such file`
+    } else if (cmd === 'date') output = new Date().toLocaleString()
+    else if (cmd === 'whoami') output = 'phablet'
+    else if (cmd === 'uname' && arg === '-a') output = 'Ubuntu 24.04 LTS aarch64 GNU/Linux'
+    else if (cmd === 'uname') output = 'Linux'
+    else if (cmd === 'uptime') {
+      const hours = Math.floor(Math.random() * 24)
+      const mins = Math.floor(Math.random() * 60)
+      output = ` ${hours}:${mins.toString().padStart(2, '0')} up 1 day, ${Math.floor(Math.random() * 3) + 1}:${Math.floor(Math.random() * 60)}, 2 users, load average: 0.1, 0.2, 0.3`
+    } else if (cmd === 'df') output = 'Filesystem     1K-blocks    Used Available Use% Mounted on\n/dev/mmcblk0p2   31457280 8388608  20971520  29% /\ntmpfs             1024000       0   1024000   0% /dev/shm'
+    else if (cmd === 'free') output = '              total        used        free      shared  buff/cache   available\nMem:        2048000      512000     1024000       25600      512000      1400000\nSwap:        512000           0      512000'
+    else if (cmd === 'hostname') output = 'ubuntu-phablet'
+    else if (cmd === 'pwd') output = '/home/phablet'
+    else if (cmd === 'echo') output = arg
     else if (next) output = `${next}: command not found`
     setLines([...lines, `phablet@ubuntu:~$ ${next}`, output])
     setCommand('')
@@ -1539,7 +1580,7 @@ function WeatherApp({ data, updateData }) {
       <span>{weather.location} · {weather.condition}</span>
       <button onClick={toggleUnit}>Use °{weather.unit === 'C' ? 'F' : 'C'}</button>
       <div className="forecast">{weather.hourly.map((temp, index) => <p key={index}>{index === 0 ? 'Now' : `${index + 14}:00`}<br />{temp}°</p>)}</div>
-      <div className="daily-forecast">{weather.daily.map(([day, temp, condition]) => <p key={day}><strong>{day}</strong><span>{condition}</span><b>{temp}°</b></p>)}</div>
+      <div className="daily-forecast">{weather.daily.map(([day, temp, condition]) => <p key={day}><strong>{day}</strong><b>{temp}° <small>{condition}</small></b></p>)}</div>
     </div>
   )
 }
@@ -1638,31 +1679,199 @@ function ContactsApp({ data, updateData, openApp, notify }) {
   )
 }
 
-function MusicApp({ data, updateData }) {
-  const music = data.music
-  const track = music.tracks.find((item) => item.id === music.playing) || music.tracks[0]
-  const [playing, setPlaying] = useState(false)
-  const choose = (id) => updateData((current) => ({ ...current, music: { ...current.music, playing: id } }))
-  return (
-    <div className="media-app">
-      <div className="album-art"><Music size={76} /></div>
-      <h2>{track.title}</h2><p>{track.artist} · {track.album}</p>
-      <input type="range" min="0" max="100" value={playing ? 54 : 24} readOnly aria-label="Playback progress" />
-      <div className="media-controls"><button>Shuffle</button><button onClick={() => setPlaying(!playing)}>{playing ? 'Pause' : 'Play'}</button><button>Repeat</button></div>
-      <div className="list-stack">{music.tracks.map((item) => <button className={item.id === track.id ? 'active' : ''} key={item.id} onClick={() => choose(item.id)}><Music size={18} /><strong>{item.title}</strong><small>{item.artist} · {item.length}</small></button>)}</div>
-    </div>
-  )
-}
+function MusicApp() {
+  const [activeTab, setActiveTab] = useState('library')
+  const [currentTrack, setCurrentTrack] = useState(0)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [progress, setProgress] = useState(42)
+  const [shuffle, setShuffle] = useState(false)
+  const [repeat, setRepeat] = useState('off')
+  const [searchQuery, setSearchQuery] = useState('')
 
-function MediaApp({ data }) {
-  const media = data.files.filter((file) => ['video', 'audio', 'map'].includes(file.type)).concat([{ id: 'demo-video', name: 'Ubuntu Touch tour.mp4', type: 'video', app: 'media' }])
+  const sampleTracks = [
+    { id: 1, title: 'Midnight Dreams', artist: 'Luna Eclipse', album: 'Starlight', duration: '3:42', cover: null },
+    { id: 2, title: 'Electric Pulse', artist: 'Neon Wave', album: 'Synth City', duration: '4:15', cover: null },
+    { id: 3, title: 'Ocean Breeze', artist: 'Coastal', album: 'Summer', duration: '3:28', cover: null },
+    { id: 4, title: 'Urban Jungle', artist: 'City Lights', album: 'Night Life', duration: '3:55', cover: null },
+    { id: 5, title: 'Starlight Serenade', artist: 'Luna Eclipse', album: 'Starlight', duration: '4:02', cover: null },
+    { id: 6, title: 'Digital Love', artist: 'Neon Wave', album: 'Synth City', duration: '3:38', cover: null },
+  ]
+
+  const albums = [
+    { id: 1, name: 'Starlight', artist: 'Luna Eclipse', cover: null },
+    { id: 2, name: 'Synth City', artist: 'Neon Wave', cover: null },
+    { id: 3, name: 'Summer', artist: 'Coastal', cover: null },
+    { id: 4, name: 'Night Life', artist: 'City Lights', cover: null },
+  ]
+
+  const artists = ['Luna Eclipse', 'Neon Wave', 'Coastal', 'City Lights']
+
+  const filteredTracks = searchQuery
+    ? sampleTracks.filter(t => t.title.toLowerCase().includes(searchQuery.toLowerCase()) || t.artist.toLowerCase().includes(searchQuery.toLowerCase()))
+    : sampleTracks
+
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60)
+    const secs = Math.floor(seconds % 60)
+    return `${mins}:${secs.toString().padStart(2, '0')}`
+  }
+
+  const playTrack = (index) => {
+    setCurrentTrack(index)
+    setIsPlaying(true)
+  }
+
+  const togglePlay = () => setIsPlaying(!isPlaying)
+
+  const nextTrack = () => {
+    setCurrentTrack((currentTrack + 1) % sampleTracks.length)
+  }
+
+  const prevTrack = () => {
+    setCurrentTrack((currentTrack - 1 + sampleTracks.length) % sampleTracks.length)
+  }
+
+  const cycleRepeat = () => {
+    const modes = ['off', 'all', 'one']
+    const currentIndex = modes.indexOf(repeat)
+    setRepeat(modes[(currentIndex + 1) % modes.length])
+  }
+
+  const track = sampleTracks[currentTrack]
+
   return (
-    <div className="media-app">
-      <div className="album-art"><Video size={76} /></div>
-      <h2>Media Player</h2><p>Now playing: Ubuntu Touch tour</p>
-      <input type="range" min="0" max="100" defaultValue="42" aria-label="Playback progress" />
-      <div className="media-controls"><button>Prev</button><button>Play</button><button>Next</button></div>
-      <div className="list-stack">{media.map((file) => <button key={file.id}><Video size={18} /><strong>{file.name}</strong><small>{file.type}</small></button>)}</div>
+    <div className="music-app">
+      <div className="music-tabs">
+        <button className={activeTab === 'library' ? 'active' : ''} onClick={() => setActiveTab('library')}>Library</button>
+        <button className={activeTab === 'nowplaying' ? 'active' : ''} onClick={() => setActiveTab('nowplaying')}>Now Playing</button>
+        <button className={activeTab === 'search' ? 'active' : ''} onClick={() => setActiveTab('search')}>Search</button>
+      </div>
+
+      {activeTab === 'library' && (
+        <div className="music-library">
+          <div className="music-section">
+            <h3>Recently Played</h3>
+            <div className="music-horiz-scroll">
+              {albums.slice(0, 3).map(album => (
+                <div key={album.id} className="music-album-card" onClick={() => playTrack(0)}>
+                  <div className="music-album-cover"><Music size={28} /></div>
+                  <span>{album.name}</span>
+                  <small>{album.artist}</small>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="music-section">
+            <h3>Songs</h3>
+            <div className="music-list">
+              {sampleTracks.map((t, index) => (
+                <button key={t.id} className={index === currentTrack ? 'active' : ''} onClick={() => playTrack(index)}>
+                  <div className="music-track-num">{index + 1}</div>
+                  <div className="music-track-info">
+                    <strong>{t.title}</strong>
+                    <small>{t.artist}</small>
+                  </div>
+                  <span className="music-track-duration">{t.duration}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="music-section">
+            <h3>Albums</h3>
+            <div className="music-horiz-scroll">
+              {albums.map(album => (
+                <div key={album.id} className="music-album-card">
+                  <div className="music-album-cover"><Music size={28} /></div>
+                  <span>{album.name}</span>
+                  <small>{album.artist}</small>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="music-section">
+            <h3>Artists</h3>
+            <div className="music-horiz-scroll">
+              {artists.map(artist => (
+                <div key={artist} className="music-artist-card">
+                  <div className="music-artist-avatar"><Music size={24} /></div>
+                  <span>{artist}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'nowplaying' && (
+        <div className="music-player">
+          <div className="now-playing-art">
+            <div className="album-art-large"><Music size={72} /></div>
+          </div>
+          <div className="now-playing-info">
+            <h2>{track.title}</h2>
+            <p>{track.artist}</p>
+            <small>{track.album}</small>
+          </div>
+          <div className="now-playing-progress">
+            <input type="range" min="0" max="100" value={progress} onChange={(e) => setProgress(e.target.value)} className="music-progress" />
+            <div className="music-time-display">
+              <span>{formatTime((progress / 100) * 200)}</span>
+              <span>{formatTime(200)}</span>
+            </div>
+          </div>
+          <div className="now-playing-controls">
+            <button className={`music-control-btn ${shuffle ? 'active' : ''}`} onClick={() => setShuffle(!shuffle)}><Shuffle size={18} /></button>
+            <button className="music-control-btn" onClick={prevTrack}><SkipBack size={24} /></button>
+            <button className="music-control-btn play-btn" onClick={togglePlay}>{isPlaying ? <Pause size={28} /> : <Play size={28} />}</button>
+            <button className="music-control-btn" onClick={nextTrack}><SkipForward size={24} /></button>
+            <button className={`music-control-btn ${repeat !== 'off' ? 'active' : ''}`} onClick={cycleRepeat}><Repeat size={18} /></button>
+          </div>
+          <div className="now-playing-extras">
+            <button><ListMusic size={20} /></button>
+            <button><Volume2 size={20} /></button>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'search' && (
+        <div className="music-search">
+          <div className="music-search-bar">
+            <Search size={18} />
+            <input type="text" placeholder="Search songs, artists, albums..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+          </div>
+          {searchQuery ? (
+            <div className="music-list">
+              {filteredTracks.length > 0 ? (
+                filteredTracks.map((t) => (
+                  <button key={t.id} onClick={() => { playTrack(sampleTracks.indexOf(t)); setActiveTab('nowplaying') }}>
+                    <Music size={18} />
+                    <div className="music-track-info">
+                      <strong>{t.title}</strong>
+                      <small>{t.artist}</small>
+                    </div>
+                  </button>
+                ))
+              ) : (
+                <p className="music-no-results">No results found</p>
+              )}
+            </div>
+          ) : (
+            <div className="music-search-suggestions">
+              <h3>Recent Searches</h3>
+              <p>No recent searches</p>
+              <h3>Suggested</h3>
+              <div className="music-horiz-scroll">
+                {sampleTracks.slice(0, 4).map(t => (
+                  <button key={t.id} onClick={() => setSearchQuery(t.title)} className="music-suggestion-chip">{t.title}</button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }
