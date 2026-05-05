@@ -226,6 +226,8 @@ button:disabled {
 
 .demo-page {
   min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
   color: var(--text);
   background: radial-gradient(circle at 18% 18%, rgba(244, 81, 30, 0.2), transparent 28%), radial-gradient(circle at 85% 72%, rgba(0, 188, 212, 0.14), transparent 30%), var(--bg);
   grid-template-rows: auto 1fr;
@@ -1487,12 +1489,15 @@ button:disabled {
 .app-content {
   min-height: 0;
   flex: 1;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   background: #f5f2ef;
 }
 
 .app-content > * {
   min-height: 100%;
+  width: 100%;
+  max-width: 100%;
 }
 
 .browser-app,
@@ -3594,6 +3599,8 @@ button:disabled {
 
 .phone-shell {
   isolation: isolate;
+  contain: layout paint;
+  transform: none !important;
 }
 
 .shell-page {
@@ -3684,17 +3691,35 @@ button:disabled {
 
 .phone-shell.mode-app .app-page,
 .phone-shell.mode-tasks .task-switcher-page {
-  left: 0;
-}
-
-/* App pages keep the launcher rail reserved even while the launcher is minimized. */
-.phone-shell.mode-app .app-page {
-  left: var(--launcher-width) !important;
+  inset: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: auto !important;
 }
 
 .phone-shell.mode-app.launcher-revealed .app-page,
 .phone-shell.mode-app.launcher-minimized .app-page {
-  left: var(--launcher-width) !important;
+  inset: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: auto !important;
+}
+
+.phone-shell.mode-app .app-surface {
+  position: absolute !important;
+  inset: 0 !important;
+  transform: none !important;
+  overflow: hidden !important;
+}
+
+.phone-shell.mode-app .app-content,
+.phone-shell.mode-app .browser-app {
+  position: absolute;
+  inset: 0;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
 }
 
 

@@ -389,6 +389,32 @@ function App() {
   }
 
   const finishEdgeGesture = () => setEdgeDrag(null)
+
+  useEffect(() => {
+    const resetHorizontalScroll = () => {
+      window.scrollTo({ left: 0, top: window.scrollY })
+      document.documentElement.scrollLeft = 0
+      document.body.scrollLeft = 0
+      document.querySelectorAll('.phone-shell').forEach((element) => {
+        element.style.transform = 'none'
+      })
+      document.querySelectorAll('*').forEach((element) => {
+        element.scrollLeft = 0
+      })
+    }
+    resetHorizontalScroll()
+    const frame = window.requestAnimationFrame(resetHorizontalScroll)
+    const timers = [
+      window.setTimeout(resetHorizontalScroll, 0),
+      window.setTimeout(resetHorizontalScroll, 120),
+      window.setTimeout(resetHorizontalScroll, 300),
+    ]
+    return () => {
+      window.cancelAnimationFrame(frame)
+      timers.forEach((timer) => window.clearTimeout(timer))
+    }
+  }, [activeApp, showDrawer, showTasks, launcherVisible])
+
   const active = allApps.find((app) => app.id === activeApp)
   const backgroundApps = openApps.map((id) => allApps.find((app) => app.id === id)).filter(Boolean)
   const shellMode = showTasks ? 'tasks' : active ? 'app' : showDrawer ? 'drawer' : 'home'
