@@ -1,70 +1,16 @@
-# Ubuntu Experience
+# React + Vite
 
-A web-based interactive demo (PWA) of the Ubuntu Touch mobile operating system user interface.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Live Demo
+Currently, two official plugins are available:
 
-**Try it here**: https://kenneth-cho-infosec.github.io/UbuntuExperience/
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## About
+## React Compiler
 
-This is a **web-based simulation** of Ubuntu Touch - a Progressive Web App (PWA) that runs directly in your browser. It demonstrates the Ubuntu Touch user experience, featuring:
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-- Lock screen with time and notifications
-- App launcher with grid of apps
-- System settings
-- Weather app
-- Music player with library
-- Terminal emulator with various commands
-- File manager
-- Gallery
-- Browser
-- Messaging and phone apps
-- Task switcher
-- Dark/Light mode toggle
+## Expanding the ESLint configuration
 
-**Note**: This is a UI demo/simulator only - it cannot run actual Ubuntu Touch apps or operating system.
-
-## Installation
-
-```bash
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-```
-
-## Usage
-
-1. Open the app in a browser
-2. Unlock the screen (swipe up)
-3. Browse through the app drawer
-4. Try various apps and features
-5. Toggle dark/light mode in settings
-6. Use the size input to adjust demo dimensions
-
-## Running as a PWA
-
-To install as a PWA:
-- Use the live demo link above
-- Or serve the `dist` folder locally
-- Open on a mobile device
-- Add to home screen for fullscreen experience
-
-## Technologies
-
-- React 19
-- Vite
-- Lucide React (icons)
-- CSS for styling
-
-## License
-
-MIT
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.

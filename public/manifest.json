@@ -2,17 +2,17 @@
   "name": "Ubuntu Experience",
   "short_name": "Ubuntu",
   "description": "Interactive Ubuntu Touch demo - try the Ubuntu Touch experience in your browser",
-  "start_url": "/",
+  "start_url": ".",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#160012",
   "theme_color": "#160012",
-  "scope": "/",
+  "scope": ".",
   "lang": "en",
   "categories": ["utilities", "education"],
   "icons": [
     {
-      "src": "/ubuntu-cof.svg",
+      "src": "ubuntu-cof.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
