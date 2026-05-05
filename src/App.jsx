@@ -1193,10 +1193,6 @@ function BrowserApp({ data, updateData, notify }) {
           <span>Some sites block embedded browsing. Use the external-open button when a page refuses to load here.</span>
         </div>
       </section>
-      <footer className="morph-bottom-bar">
-        <button onClick={() => addTab(false)}><Plus size={18} />({browser.tabs.length})</button>
-        <button onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle browser menu"><Menu size={18} />Menu</button>
-      </footer>
     </div>
   )
 }
