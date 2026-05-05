@@ -3566,6 +3566,7 @@ button:disabled {
 .phone-shell .status-bar,
 .phone-shell.dark-mode .status-bar,
 .phone-shell.light-mode .status-bar {
+  z-index: var(--z-app-bar, 1000) !important;
   background: #050505 !important;
   color: #fff !important;
   border-color: transparent !important;
@@ -3589,6 +3590,69 @@ button:disabled {
 .phone-shell .ubuntu-home img {
   filter: none !important;
   opacity: 1 !important;
+}
+
+.phone-shell {
+  isolation: isolate;
+}
+
+.shell-page {
+  z-index: var(--z-workspace, 10);
+}
+
+.phone-shell.mode-home .workspace,
+.phone-shell.mode-drawer .workspace {
+  inset: var(--status-height) 0 0 var(--launcher-width);
+}
+
+.phone-shell.mode-app .workspace,
+.phone-shell.mode-tasks .workspace {
+  inset: var(--status-height) 0 0 0;
+}
+
+.launcher {
+  inset: var(--status-height) auto 0 0 !important;
+  padding-top: 0 !important;
+  z-index: var(--z-launcher, 80);
+}
+
+.launcher-docked {
+  transform: translateX(0);
+  box-shadow: none;
+}
+
+.launcher-minimized,
+.launcher-hidden {
+  transform: translateX(-100%);
+  pointer-events: none;
+}
+
+.launcher-revealed {
+  z-index: calc(var(--z-launcher, 80) + 20);
+  transform: translateX(0);
+  pointer-events: auto;
+  box-shadow: 16px 0 28px rgba(0, 0, 0, 0.36);
+}
+
+.phone-shell.mode-app.launcher-minimized .edge-gesture-zone.left {
+  width: 28px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.13), transparent);
+}
+
+.phone-shell.mode-app.launcher-revealed .edge-gesture-zone {
+  display: none;
+}
+
+.app-page {
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-app-surface, 50);
+}
+
+.task-switcher-page {
+  position: absolute;
+  inset: 0;
+  z-index: calc(var(--z-app-surface, 50) + 10);
 }
 
 .browser-app {

@@ -354,6 +354,10 @@ function App() {
     if (!activeApp || showTasks) return
     const bounds = event.currentTarget.getBoundingClientRect()
     const localX = event.clientX - bounds.left
+    if (launcherVisible && localX > 76) {
+      setLauncherVisible(false)
+      return
+    }
     if (localX < 28) {
       setEdgeDrag({ side: 'left', x: event.clientX })
       event.currentTarget.setPointerCapture(event.pointerId)
@@ -387,11 +391,13 @@ function App() {
   const finishEdgeGesture = () => setEdgeDrag(null)
   const active = allApps.find((app) => app.id === activeApp)
   const backgroundApps = openApps.map((id) => allApps.find((app) => app.id === id)).filter(Boolean)
+  const shellMode = showTasks ? 'tasks' : active ? 'app' : showDrawer ? 'drawer' : 'home'
+  const launcherState = !active ? 'docked' : launcherVisible ? 'revealed' : 'minimized'
 
   return (
     <main className={`demo-page ${data.darkMode ? 'dark-mode' : 'light-mode'} ${isPWA ? 'pwa-mode' : ''}`}>
       {!isPWA && <DemoSizeControls demoWidth={data.demoWidth} setDemoWidth={(w) => updateData((current) => ({ ...current, demoWidth: w }))} demoHeight={data.demoHeight} setDemoHeight={(h) => updateData((current) => ({ ...current, demoHeight: h }))} />}
-      <section className={`phone-shell ${active ? 'app-open' : ''} ${edgeDrag ? 'edge-swiping' : ''} ${data.darkMode ? 'dark-mode' : 'light-mode'} ${isPWA ? 'pwa-fullscreen' : ''}`} style={{ '--shell-width': `${data.demoWidth}px`, '--shell-height': `${data.demoHeight}px` }} aria-label="Ubuntu Experience interactive demo">
+      <section className={`phone-shell mode-${shellMode} launcher-${launcherState} ${active ? 'app-open' : ''} ${edgeDrag ? 'edge-swiping' : ''} ${data.darkMode ? 'dark-mode' : 'light-mode'} ${isPWA ? 'pwa-fullscreen' : ''}`} style={{ '--shell-width': `${data.demoWidth}px`, '--shell-height': `${data.demoHeight}px` }} aria-label="Ubuntu Experience interactive demo">
         {locked ? (
           <LockScreen
             status={data.status}
@@ -408,10 +414,10 @@ function App() {
               goHome={openAppDrawer}
               activeApp={activeApp}
               showDrawer={showDrawer}
-              visible={showTasks ? false : !active || launcherVisible}
+              state={showTasks ? 'hidden' : launcherState}
             />
             <div
-              className={`workspace ${active ? 'app-workspace' : ''}`}
+              className={`workspace shell-page shell-page-${shellMode} ${active ? 'app-workspace' : ''}`}
               onPointerDown={startEdgeGesture}
               onPointerMove={moveEdgeGesture}
               onPointerUp={finishEdgeGesture}
@@ -430,10 +436,6 @@ function App() {
                 <AppSurface
                   app={active}
                   darkMode={data.darkMode}
-                  close={() => {
-                    setActiveApp(null)
-                    setLauncherVisible(false)
-                  }}
                   openApp={openApp}
                   data={data}
                   updateData={updateData}
@@ -854,10 +856,11 @@ function StatusBar({ status, setStatus }) {
   )
 }
 
-function Launcher({ openApp, goHome, activeApp, showDrawer, visible = true }) {
+function Launcher({ openApp, goHome, activeApp, showDrawer, state = 'docked' }) {
   const launcherApps = launcherIds.map((id) => appCatalog.find((app) => app.id === id))
+  const visible = state !== 'hidden' && state !== 'minimized'
   return (
-    <nav className={`launcher ${visible ? 'visible' : 'hidden'}`} aria-label="Ubuntu launcher" aria-hidden={!visible}>
+    <nav className={`launcher launcher-${state} ${visible ? 'visible' : 'hidden'}`} aria-label="Ubuntu launcher app bar" aria-hidden={!visible}>
       <div className="launcher-stack">
         {launcherApps.map((app) => (
           <button className={`launcher-button ${activeApp === app.id ? 'active' : ''}`} key={app.id} onPointerDown={(event) => event.stopPropagation()} onPointerUp={(event) => {
@@ -877,7 +880,7 @@ function Launcher({ openApp, goHome, activeApp, showDrawer, visible = true }) {
 
 function HomeScreen({ apps, query, setQuery, showDrawer, openApp }) {
   return (
-    <div className="home-screen">
+    <div className={`home-screen ${showDrawer ? 'drawer-open' : 'home-idle'}`}>
       {showDrawer && (
         <section className="app-drawer" aria-label="Applications">
           <label className="search-box">
@@ -917,7 +920,7 @@ function AppIcon({ app, compact = false }) {
 
 function AppSurface({ app, openApp, data, updateData, installApp, removeApp, resetDemo, notify, darkMode }) {
   return (
-    <section className={`app-surface ${darkMode ? 'dark-mode' : 'light-mode'}`} aria-label={app.name}>
+    <section className={`app-surface app-page ${darkMode ? 'dark-mode' : 'light-mode'}`} aria-label={`${app.name} app page`}>
       <div className={`app-content ${darkMode ? 'dark-mode' : 'light-mode'}`}>
         <AppContent id={app.id} app={app} openApp={openApp} data={data} updateData={updateData} installApp={installApp} removeApp={removeApp} resetDemo={resetDemo} notify={notify} />
       </div>
@@ -1002,7 +1005,7 @@ function TaskSwitcher({ apps, activeApp, openApp, closeApp, goHome }) {
   }
 
   return (
-    <section className="task-switcher" aria-label="Background apps">
+    <section className="task-switcher task-switcher-page" aria-label="Task switcher">
       <header className="task-switcher-header">
         <strong>Open apps</strong>
         <span>Swipe a card up to close it</span>
