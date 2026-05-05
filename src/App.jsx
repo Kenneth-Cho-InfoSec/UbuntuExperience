@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   AppWindow,
   ArrowLeft,
-  ArrowRight,
   BatteryFull,
   Bell,
   BookOpen,
@@ -14,7 +13,6 @@ import {
   CloudSun,
   Download,
   Eye,
-  ExternalLink,
   FileText,
   Folder,
   Globe2,
@@ -35,7 +33,6 @@ import {
   Phone,
   Play,
   Plus,
-  RefreshCcw,
   Repeat,
   Search,
   Settings,
@@ -1163,13 +1160,6 @@ function BrowserApp({ data, updateData, notify }) {
         </form>
         <button className="morph-menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Browser menu" title="Menu"><Menu size={24} /></button>
       </header>
-      <div className="morph-page-tools">
-        <button onClick={() => setPanel(panel === 'tabs' ? null : 'tabs')} title="Tabs"><AppWindow size={20} /></button>
-        <button className={tab.private ? 'active' : ''} onClick={() => addTab(true)} title="Private tab"><Shield size={20} /></button>
-        <button onClick={() => moveHistory(1)} disabled={tab.index >= tab.history.length - 1} title="Forward"><ArrowRight size={18} /></button>
-        <button onClick={() => setFrameKey((key) => key + 1)} title="Reload"><RefreshCcw size={18} /></button>
-        <a href={tab.url} target="_blank" rel="noreferrer" title="Open outside demo"><ExternalLink size={18} /></a>
-      </div>
       <div className="morph-tabs" aria-label="Browser tabs">
         {browser.tabs.map((item) => (
           <button className={item.id === browser.activeTab ? 'active' : ''} key={item.id} onClick={() => {

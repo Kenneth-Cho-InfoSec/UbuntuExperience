@@ -1530,12 +1530,12 @@ button:disabled {
 }
 
 .morph-topbar {
-  min-height: 64px;
+  min-height: 38px;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
+  gap: 6px;
+  padding: 6px 8px;
   border-bottom: 1px solid #ececec;
   background: #fff;
 }
@@ -1551,8 +1551,8 @@ button:disabled {
 }
 
 .morph-back {
-  width: 34px;
-  height: 42px;
+  width: 30px;
+  height: 30px;
   display: grid;
   place-items: center;
   color: #aaa;
@@ -1560,27 +1560,27 @@ button:disabled {
 
 .morph-address {
   min-width: 0;
-  height: 44px;
+  height: 26px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 0 10px;
+  gap: 7px;
+  padding: 0 8px;
   border: 1px solid #d2d2d2;
-  border-radius: 12px;
+  border-radius: 10px;
   background: #fff;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
 .duck-badge {
-  width: 26px;
-  height: 26px;
+  width: 18px;
+  height: 18px;
   flex: 0 0 auto;
   display: grid;
   place-items: center;
-  border: 2px solid #ef5b2a;
+  border: 1.5px solid #ef5b2a;
   border-radius: 50%;
   color: #ef5b2a;
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 800;
 }
 
@@ -1591,7 +1591,7 @@ button:disabled {
   outline: 0;
   background: transparent;
   color: #111;
-  font-size: clamp(15px, 4vw, 20px);
+  font-size: 13px;
 }
 
 .morph-address button {
@@ -1605,8 +1605,8 @@ button:disabled {
 }
 
 .morph-menu-button {
-  width: 38px;
-  height: 42px;
+  width: 30px;
+  height: 30px;
   display: grid;
   place-items: center;
 }
