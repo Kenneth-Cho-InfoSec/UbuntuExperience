@@ -3318,6 +3318,249 @@ button:disabled {
   }
 }
 
+/* Final theme contract: keep app chrome, cards, panels, and form controls readable in both modes. */
+.phone-shell.dark-mode,
+.app-surface.dark-mode,
+.app-content.dark-mode {
+  --theme-app-bg: #111216;
+  --theme-surface: #1a1d23;
+  --theme-surface-2: #232731;
+  --theme-surface-3: #2d3340;
+  --theme-text: #f3f5f7;
+  --theme-muted: #aeb6c2;
+  --theme-border: #384050;
+  --theme-accent: #ff7a3d;
+  --theme-danger: #ef5350;
+}
+
+.phone-shell.light-mode,
+.app-surface.light-mode,
+.app-content.light-mode {
+  --theme-app-bg: #faf9f8;
+  --theme-surface: #ffffff;
+  --theme-surface-2: #f0eeec;
+  --theme-surface-3: #e3dfdc;
+  --theme-text: #1f2328;
+  --theme-muted: #66707c;
+  --theme-border: #d8d2cd;
+  --theme-accent: #8a2350;
+  --theme-danger: #c22b2b;
+}
+
+.phone-shell.dark-mode .app-surface,
+.phone-shell.dark-mode .app-content,
+.phone-shell.dark-mode .browser-app,
+.phone-shell.dark-mode .gallery-app,
+.phone-shell.dark-mode .camera-app,
+.phone-shell.dark-mode .messaging-app,
+.phone-shell.dark-mode .phone-app,
+.phone-shell.dark-mode .settings-app,
+.phone-shell.dark-mode .terminal-app,
+.phone-shell.dark-mode .notes-app,
+.phone-shell.dark-mode .weather-app,
+.phone-shell.dark-mode .store-app,
+.phone-shell.dark-mode .contacts-app,
+.phone-shell.dark-mode .media-app,
+.phone-shell.dark-mode .files-app,
+.phone-shell.dark-mode .mail-app,
+.phone-shell.dark-mode .rich-app,
+.app-surface.dark-mode,
+.app-content.dark-mode {
+  background: var(--theme-app-bg) !important;
+  color: var(--theme-text) !important;
+}
+
+.phone-shell.light-mode .app-surface,
+.phone-shell.light-mode .app-content,
+.phone-shell.light-mode .browser-app,
+.phone-shell.light-mode .gallery-app,
+.phone-shell.light-mode .camera-app,
+.phone-shell.light-mode .messaging-app,
+.phone-shell.light-mode .phone-app,
+.phone-shell.light-mode .settings-app,
+.phone-shell.light-mode .terminal-app,
+.phone-shell.light-mode .notes-app,
+.phone-shell.light-mode .weather-app,
+.phone-shell.light-mode .store-app,
+.phone-shell.light-mode .contacts-app,
+.phone-shell.light-mode .media-app,
+.phone-shell.light-mode .files-app,
+.phone-shell.light-mode .mail-app,
+.phone-shell.light-mode .rich-app,
+.app-surface.light-mode,
+.app-content.light-mode {
+  background: var(--theme-app-bg) !important;
+  color: var(--theme-text) !important;
+}
+
+.phone-shell.dark-mode .morph-topbar,
+.phone-shell.dark-mode .morph-tabs,
+.phone-shell.dark-mode .morph-viewport,
+.phone-shell.dark-mode .morph-bottom-bar,
+.phone-shell.dark-mode .morph-menu,
+.phone-shell.dark-mode .browser-panel,
+.phone-shell.dark-mode .chat-pane,
+.phone-shell.dark-mode .note-editor,
+.phone-shell.dark-mode .contact-detail,
+.phone-shell.dark-mode .reader-pane,
+.phone-shell.dark-mode .side-list,
+.phone-shell.dark-mode .list-stack,
+.phone-shell.dark-mode .settings-section,
+.phone-shell.dark-mode .settings-section p,
+.phone-shell.dark-mode .store-hero,
+.phone-shell.dark-mode .store-list,
+.phone-shell.dark-mode .store-detail,
+.phone-shell.dark-mode .terminal-lines,
+.phone-shell.dark-mode .photo-preview,
+.phone-shell.dark-mode .camera-controls,
+.phone-shell.dark-mode .dialpad,
+.phone-shell.dark-mode .album-art,
+.phone-shell.dark-mode .task-preview,
+.phone-shell.dark-mode .task-card header {
+  background: var(--theme-surface) !important;
+  color: var(--theme-text) !important;
+  border-color: var(--theme-border) !important;
+}
+
+.phone-shell.light-mode .morph-topbar,
+.phone-shell.light-mode .morph-tabs,
+.phone-shell.light-mode .morph-viewport,
+.phone-shell.light-mode .morph-bottom-bar,
+.phone-shell.light-mode .morph-menu,
+.phone-shell.light-mode .browser-panel,
+.phone-shell.light-mode .chat-pane,
+.phone-shell.light-mode .note-editor,
+.phone-shell.light-mode .contact-detail,
+.phone-shell.light-mode .reader-pane,
+.phone-shell.light-mode .side-list,
+.phone-shell.light-mode .list-stack,
+.phone-shell.light-mode .settings-section,
+.phone-shell.light-mode .settings-section p,
+.phone-shell.light-mode .store-hero,
+.phone-shell.light-mode .store-list,
+.phone-shell.light-mode .store-detail,
+.phone-shell.light-mode .terminal-lines,
+.phone-shell.light-mode .photo-preview,
+.phone-shell.light-mode .camera-controls,
+.phone-shell.light-mode .dialpad,
+.phone-shell.light-mode .album-art,
+.phone-shell.light-mode .task-preview,
+.phone-shell.light-mode .task-card header {
+  background: var(--theme-surface) !important;
+  color: var(--theme-text) !important;
+  border-color: var(--theme-border) !important;
+}
+
+.phone-shell.dark-mode .morph-address,
+.phone-shell.dark-mode .morph-tabs button,
+.phone-shell.dark-mode .browser-panel button,
+.phone-shell.dark-mode .side-list button,
+.phone-shell.dark-mode .list-stack button,
+.phone-shell.dark-mode .settings-row,
+.phone-shell.dark-mode .weather-app button,
+.phone-shell.dark-mode .store-filters button,
+.phone-shell.dark-mode .store-app button,
+.phone-shell.dark-mode .contact-actions button,
+.phone-shell.dark-mode .file-toolbar button,
+.phone-shell.dark-mode .full-button,
+.phone-shell.dark-mode .upload-button,
+.phone-shell.dark-mode .calendar-chip,
+.phone-shell.dark-mode .chat-list .them,
+.phone-shell.dark-mode .note-card,
+.phone-shell.dark-mode .file-item {
+  background: var(--theme-surface-2) !important;
+  color: var(--theme-text) !important;
+  border-color: var(--theme-border) !important;
+}
+
+.phone-shell.light-mode .morph-address,
+.phone-shell.light-mode .morph-tabs button,
+.phone-shell.light-mode .browser-panel button,
+.phone-shell.light-mode .side-list button,
+.phone-shell.light-mode .list-stack button,
+.phone-shell.light-mode .settings-row,
+.phone-shell.light-mode .weather-app button,
+.phone-shell.light-mode .store-filters button,
+.phone-shell.light-mode .store-app button,
+.phone-shell.light-mode .contact-actions button,
+.phone-shell.light-mode .file-toolbar button,
+.phone-shell.light-mode .full-button,
+.phone-shell.light-mode .upload-button,
+.phone-shell.light-mode .calendar-chip,
+.phone-shell.light-mode .chat-list .them,
+.phone-shell.light-mode .note-card,
+.phone-shell.light-mode .file-item {
+  background: var(--theme-surface-2) !important;
+  color: var(--theme-text) !important;
+  border-color: var(--theme-border) !important;
+}
+
+.phone-shell.dark-mode input,
+.phone-shell.dark-mode textarea,
+.phone-shell.dark-mode select {
+  background: var(--theme-surface-2) !important;
+  color: var(--theme-text) !important;
+  border-color: var(--theme-border) !important;
+}
+
+.phone-shell.light-mode input,
+.phone-shell.light-mode textarea,
+.phone-shell.light-mode select {
+  background: #ffffff !important;
+  color: var(--theme-text) !important;
+  border-color: var(--theme-border) !important;
+}
+
+.phone-shell.dark-mode .app-surface :is(h1, h2, h3, h4, p, label, li, strong),
+.phone-shell.dark-mode .app-content :is(h1, h2, h3, h4, p, label, li, strong) {
+  color: var(--theme-text);
+}
+
+.phone-shell.light-mode .app-surface :is(h1, h2, h3, h4, p, label, li, strong),
+.phone-shell.light-mode .app-content :is(h1, h2, h3, h4, p, label, li, strong) {
+  color: var(--theme-text);
+}
+
+.phone-shell.dark-mode small,
+.phone-shell.dark-mode .browser-panel small,
+.phone-shell.dark-mode .file-toolbar span,
+.phone-shell.dark-mode .preview-browser,
+.phone-shell.dark-mode .preview-generic,
+.phone-shell.dark-mode .empty-task-card,
+.phone-shell.dark-mode .calendar-chip strong,
+.phone-shell.dark-mode .settings-section h3 {
+  color: var(--theme-muted) !important;
+}
+
+.phone-shell.light-mode small,
+.phone-shell.light-mode .browser-panel small,
+.phone-shell.light-mode .file-toolbar span,
+.phone-shell.light-mode .preview-browser,
+.phone-shell.light-mode .preview-generic,
+.phone-shell.light-mode .empty-task-card,
+.phone-shell.light-mode .calendar-chip strong,
+.phone-shell.light-mode .settings-section h3 {
+  color: var(--theme-muted) !important;
+}
+
+.phone-shell.dark-mode .danger,
+.phone-shell.light-mode .danger {
+  background: var(--theme-danger) !important;
+  color: #fff !important;
+}
+
+.phone-shell.dark-mode .chat-list .me,
+.phone-shell.light-mode .chat-list .me,
+.phone-shell.dark-mode .browser-shortcuts button,
+.phone-shell.light-mode .browser-shortcuts button,
+.phone-shell.dark-mode .store-filters button.active,
+.phone-shell.light-mode .store-filters button.active,
+.phone-shell.dark-mode .morph-tabs button.active,
+.phone-shell.light-mode .morph-tabs button.active {
+  background: var(--theme-accent) !important;
+  color: #fff !important;
+}
+
 
 /* Layering fix: during edge gestures, keep the app/status bar above launcher, drawer,
    workspace content and gesture hit zones. The app bar is intentionally outside the
