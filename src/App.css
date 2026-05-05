@@ -3663,6 +3663,30 @@ button:disabled {
   padding: 0 !important;
 }
 
+/* Stable shell geometry: workspace never moves; launcher/home content define their own offsets. */
+.phone-shell .workspace,
+.phone-shell.mode-home .workspace,
+.phone-shell.mode-drawer .workspace,
+.phone-shell.mode-app .workspace,
+.phone-shell.mode-tasks .workspace,
+.phone-shell .workspace.app-workspace {
+  inset: var(--status-height) 0 0 0 !important;
+}
+
+.phone-shell.mode-home .home-screen,
+.phone-shell.mode-drawer .home-screen {
+  padding-left: var(--launcher-width);
+}
+
+.phone-shell.mode-drawer .app-drawer {
+  padding-left: 14px;
+}
+
+.phone-shell.mode-app .app-page,
+.phone-shell.mode-tasks .task-switcher-page {
+  left: 0;
+}
+
 
 /* Layering fix: during edge gestures, keep the app/status bar above launcher, drawer,
    workspace content and gesture hit zones. The app bar is intentionally outside the
